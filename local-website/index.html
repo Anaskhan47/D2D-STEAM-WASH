@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Local Dev Hub - Your Personal Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <h1 class="nav-title">🚀 Local Dev Hub</h1>
+            <div class="nav-items">
+                <a href="#home" class="nav-link">Home</a>
+                <a href="#tools" class="nav-link">Tools</a>
+                <a href="#projects" class="nav-link">Projects</a>
+                <a href="#contact" class="nav-link">Contact</a>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <!-- Hero Section -->
+        <section id="home" class="hero">
+            <div class="hero-content">
+                <h1>Welcome to Your Local Development Hub</h1>
+                <p class="hero-subtitle">A modern dashboard for your local development environment</p>
+                <div class="status-indicator">
+                    <span class="status-dot"></span>
+                    <span id="status-text">Server Running Locally</span>
+                </div>
+                <button class="cta-button" onclick="showTime()">
+                    <i class="fas fa-clock"></i> Show Current Time
+                </button>
+            </div>
+        </section>
+
+        <!-- Tools Section -->
+        <section id="tools" class="tools-section">
+            <div class="container">
+                <h2>Developer Tools</h2>
+                <div class="tools-grid">
+                    <div class="tool-card">
+                        <i class="fas fa-calculator"></i>
+                        <h3>Calculator</h3>
+                        <p>Quick calculations</p>
+                        <button onclick="openCalculator()">Open</button>
+                    </div>
+                    <div class="tool-card">
+                        <i class="fas fa-palette"></i>
+                        <h3>Color Picker</h3>
+                        <p>Generate color palettes</p>
+                        <button onclick="openColorPicker()">Open</button>
+                    </div>
+                    <div class="tool-card">
+                        <i class="fas fa-code"></i>
+                        <h3>JSON Formatter</h3>
+                        <p>Format and validate JSON</p>
+                        <button onclick="openJsonFormatter()">Open</button>
+                    </div>
+                    <div class="tool-card">
+                        <i class="fas fa-text-height"></i>
+                        <h3>Lorem Generator</h3>
+                        <p>Generate placeholder text</p>
+                        <button onclick="generateLorem()">Generate</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Interactive Demo Section -->
+        <section id="projects" class="demo-section">
+            <div class="container">
+                <h2>Interactive Demo</h2>
+                <div class="demo-container">
+                    <div class="demo-item">
+                        <h3>Todo List</h3>
+                        <div class="todo-app">
+                            <input type="text" id="todoInput" placeholder="Add a new task...">
+                            <button onclick="addTodo()">Add</button>
+                            <ul id="todoList"></ul>
+                        </div>
+                    </div>
+                    <div class="demo-item">
+                        <h3>Random Quote Generator</h3>
+                        <div class="quote-container">
+                            <blockquote id="quote">Click the button to get an inspiring quote!</blockquote>
+                            <button onclick="getRandomQuote()">New Quote</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="contact-section">
+            <div class="container">
+                <h2>Local Environment Info</h2>
+                <div class="info-grid">
+                    <div class="info-card">
+                        <h3>Server Status</h3>
+                        <p>✅ Running on localhost</p>
+                        <p id="current-time"></p>
+                    </div>
+                    <div class="info-card">
+                        <h3>Browser Info</h3>
+                        <p id="browser-info"></p>
+                        <p id="screen-info"></p>
+                    </div>
+                    <div class="info-card">
+                        <h3>Performance</h3>
+                        <p>🚀 Local hosting for maximum speed</p>
+                        <p>📱 Responsive design included</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 Local Dev Hub - Built for local development</p>
+        </div>
+    </footer>
+
+    <!-- Modal for tools -->
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <div id="modal-body"></div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
