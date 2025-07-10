@@ -1,0 +1,1053 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Local Dev Hub - Your Personal Dashboard</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        /* CSS Custom Properties */
+        :root {
+            --primary-color: #667eea;
+            --secondary-color: #764ba2;
+            --accent-color: #f093fb;
+            --text-color: #333;
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --border-radius: 12px;
+            --transition: all 0.3s ease;
+        }
+
+        /* Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background: var(--bg-color);
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Navigation */
+        .navbar {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            padding: 1rem 0;
+            box-shadow: var(--shadow);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-title {
+            color: white;
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .nav-items {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-link {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition);
+            position: relative;
+            cursor: pointer;
+        }
+
+        .nav-link:hover {
+            color: var(--accent-color);
+            transform: translateY(-2px);
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--accent-color);
+            transition: var(--transition);
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="50" cy="50" r="0.5" fill="white" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+            animation: float 20s infinite linear;
+        }
+
+        @keyframes float {
+            0% { transform: translateX(-100px) translateY(-100px); }
+            100% { transform: translateX(100px) translateY(100px); }
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 800px;
+            padding: 2rem;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            animation: slideInUp 1s ease-out;
+        }
+
+        .hero-subtitle {
+            font-size: 1.3rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+            animation: slideInUp 1s ease-out 0.2s both;
+        }
+
+        .status-indicator {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-bottom: 2rem;
+            animation: slideInUp 1s ease-out 0.4s both;
+        }
+
+        .status-dot {
+            width: 12px;
+            height: 12px;
+            background: #4ade80;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .cta-button {
+            background: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            font-size: 1.1rem;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: 600;
+            box-shadow: var(--shadow);
+            animation: slideInUp 1s ease-out 0.6s both;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(240, 147, 251, 0.4);
+        }
+
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Tools Section */
+        .tools-section {
+            padding: 5rem 0;
+            background: var(--bg-color);
+        }
+
+        .tools-section h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            color: var(--text-color);
+        }
+
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+
+        .tool-card {
+            background: var(--card-bg);
+            padding: 2rem;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            text-align: center;
+            transition: var(--transition);
+            border: 1px solid #e2e8f0;
+        }
+
+        .tool-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .tool-card i {
+            font-size: 3rem;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        .tool-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+            color: var(--text-color);
+        }
+
+        .tool-card p {
+            color: #6b7280;
+            margin-bottom: 1.5rem;
+        }
+
+        .tool-card button {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: 600;
+        }
+
+        .tool-card button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        /* Demo Section */
+        .demo-section {
+            padding: 5rem 0;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+        }
+
+        .demo-section h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .demo-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 3rem;
+        }
+
+        .demo-item {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 2rem;
+            border-radius: var(--border-radius);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .demo-item h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        /* Todo App */
+        .todo-app input {
+            width: 70%;
+            padding: 0.75rem;
+            border: none;
+            border-radius: var(--border-radius);
+            margin-right: 0.5rem;
+            font-size: 1rem;
+        }
+
+        .todo-app button {
+            padding: 0.75rem 1rem;
+            background: white;
+            color: var(--primary-color);
+            border: none;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+
+        .todo-app button:hover {
+            transform: scale(1.05);
+        }
+
+        #todoList {
+            list-style: none;
+            margin-top: 1rem;
+        }
+
+        .todo-item {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 0.75rem;
+            margin: 0.5rem 0;
+            border-radius: var(--border-radius);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .delete-btn {
+            background: #ef4444;
+            color: white;
+            border: none;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.8rem;
+        }
+
+        /* Quote Container */
+        .quote-container {
+            text-align: center;
+        }
+
+        #quote {
+            font-style: italic;
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: var(--border-radius);
+            border-left: 4px solid white;
+            transition: opacity 0.3s ease;
+        }
+
+        .quote-container button {
+            background: white;
+            color: var(--primary-color);
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+
+        .quote-container button:hover {
+            transform: scale(1.05);
+        }
+
+        /* Contact Section */
+        .contact-section {
+            padding: 5rem 0;
+            background: var(--bg-color);
+        }
+
+        .contact-section h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            color: var(--text-color);
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .info-card {
+            background: var(--card-bg);
+            padding: 2rem;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            border: 1px solid #e2e8f0;
+        }
+
+        .info-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .info-card h3 {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--text-color);
+            color: white;
+            text-align: center;
+            padding: 2rem 0;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            background-color: white;
+            margin: 5% auto;
+            padding: 2rem;
+            border-radius: var(--border-radius);
+            width: 90%;
+            max-width: 600px;
+            position: relative;
+            animation: modalSlideIn 0.3s ease-out;
+        }
+
+        @keyframes modalSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .close {
+            position: absolute;
+            top: 1rem;
+            right: 1.5rem;
+            font-size: 2rem;
+            font-weight: bold;
+            cursor: pointer;
+            color: #aaa;
+        }
+
+        .close:hover {
+            color: #000;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-items {
+                display: none;
+            }
+            
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .hero-subtitle {
+                font-size: 1.1rem;
+            }
+            
+            .demo-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .todo-app input {
+                width: 60%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .tools-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Smooth scrolling */
+        html {
+            scroll-behavior: smooth;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <h1 class="nav-title">🚀 Local Dev Hub</h1>
+            <div class="nav-items">
+                <a href="#home" class="nav-link">Home</a>
+                <a href="#tools" class="nav-link">Tools</a>
+                <a href="#projects" class="nav-link">Projects</a>
+                <a href="#contact" class="nav-link">Contact</a>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <!-- Hero Section -->
+        <section id="home" class="hero">
+            <div class="hero-content">
+                <h1>Welcome to Your Local Development Hub</h1>
+                <p class="hero-subtitle">A modern dashboard running directly in your browser - no server required!</p>
+                <div class="status-indicator">
+                    <span class="status-dot"></span>
+                    <span id="status-text">Running Locally in Browser</span>
+                </div>
+                <button class="cta-button" onclick="showTime()">
+                    <i class="fas fa-clock"></i> Show Current Time
+                </button>
+            </div>
+        </section>
+
+        <!-- Tools Section -->
+        <section id="tools" class="tools-section">
+            <div class="container">
+                <h2>Developer Tools</h2>
+                <div class="tools-grid">
+                    <div class="tool-card">
+                        <i class="fas fa-calculator"></i>
+                        <h3>Calculator</h3>
+                        <p>Quick calculations</p>
+                        <button onclick="openCalculator()">Open</button>
+                    </div>
+                    <div class="tool-card">
+                        <i class="fas fa-palette"></i>
+                        <h3>Color Picker</h3>
+                        <p>Generate color palettes</p>
+                        <button onclick="openColorPicker()">Open</button>
+                    </div>
+                    <div class="tool-card">
+                        <i class="fas fa-code"></i>
+                        <h3>JSON Formatter</h3>
+                        <p>Format and validate JSON</p>
+                        <button onclick="openJsonFormatter()">Open</button>
+                    </div>
+                    <div class="tool-card">
+                        <i class="fas fa-text-height"></i>
+                        <h3>Lorem Generator</h3>
+                        <p>Generate placeholder text</p>
+                        <button onclick="generateLorem()">Generate</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Interactive Demo Section -->
+        <section id="projects" class="demo-section">
+            <div class="container">
+                <h2>Interactive Demo</h2>
+                <div class="demo-container">
+                    <div class="demo-item">
+                        <h3>Todo List</h3>
+                        <div class="todo-app">
+                            <input type="text" id="todoInput" placeholder="Add a new task...">
+                            <button onclick="addTodo()">Add</button>
+                            <ul id="todoList"></ul>
+                        </div>
+                    </div>
+                    <div class="demo-item">
+                        <h3>Random Quote Generator</h3>
+                        <div class="quote-container">
+                            <blockquote id="quote">Click the button to get an inspiring quote!</blockquote>
+                            <button onclick="getRandomQuote()">New Quote</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="contact-section">
+            <div class="container">
+                <h2>Local Environment Info</h2>
+                <div class="info-grid">
+                    <div class="info-card">
+                        <h3>File Status</h3>
+                        <p>✅ Running from file system</p>
+                        <p id="current-time"></p>
+                    </div>
+                    <div class="info-card">
+                        <h3>Browser Info</h3>
+                        <p id="browser-info"></p>
+                        <p id="screen-info"></p>
+                    </div>
+                    <div class="info-card">
+                        <h3>Performance</h3>
+                        <p>🚀 Direct file access for maximum speed</p>
+                        <p>📱 Responsive design included</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 Local Dev Hub - Standalone version, no server required!</p>
+        </div>
+    </footer>
+
+    <!-- Modal for tools -->
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <div id="modal-body"></div>
+        </div>
+    </div>
+
+    <script>
+        // Initialize the application when DOM is loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeApp();
+            updateTime();
+            setInterval(updateTime, 1000);
+            displayBrowserInfo();
+        });
+
+        // Initialize application
+        function initializeApp() {
+            console.log('🚀 Local Dev Hub initialized!');
+            
+            // Add smooth scrolling to navigation links
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href');
+                    const targetSection = document.querySelector(targetId);
+                    if (targetSection) {
+                        targetSection.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                });
+            });
+
+            // Add enter key support for todo input
+            const todoInput = document.getElementById('todoInput');
+            if (todoInput) {
+                todoInput.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        addTodo();
+                    }
+                });
+            }
+        }
+
+        // Show current time
+        function showTime() {
+            const now = new Date();
+            const timeString = now.toLocaleString();
+            alert(`Current Time: ${timeString}`);
+        }
+
+        // Update time display
+        function updateTime() {
+            const now = new Date();
+            const timeString = now.toLocaleTimeString();
+            const timeElement = document.getElementById('current-time');
+            if (timeElement) {
+                timeElement.textContent = `Current Time: ${timeString}`;
+            }
+        }
+
+        // Display browser information
+        function displayBrowserInfo() {
+            const browserInfoElement = document.getElementById('browser-info');
+            const screenInfoElement = document.getElementById('screen-info');
+            
+            if (browserInfoElement) {
+                const browserInfo = navigator.userAgent.includes('Chrome') ? 'Chrome' : 
+                                   navigator.userAgent.includes('Firefox') ? 'Firefox' : 
+                                   navigator.userAgent.includes('Safari') ? 'Safari' : 'Browser';
+                browserInfoElement.textContent = `Browser: ${browserInfo} on ${navigator.platform}`;
+            }
+            
+            if (screenInfoElement) {
+                const screenInfo = `Screen: ${screen.width}x${screen.height}`;
+                screenInfoElement.textContent = screenInfo;
+            }
+        }
+
+        // Calculator functionality
+        function openCalculator() {
+            const calculatorHTML = `
+                <h2>Calculator</h2>
+                <div class="calculator">
+                    <input type="text" id="calcDisplay" readonly style="width: 100%; padding: 1rem; font-size: 1.5rem; text-align: right; margin-bottom: 1rem; border: 1px solid #ddd; border-radius: 8px;">
+                    <div class="calc-buttons" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.5rem;">
+                        <button onclick="clearCalc()" style="background: #ef4444; color: white; padding: 1rem; border: none; border-radius: 8px; font-size: 1rem; cursor: pointer;">C</button>
+                        <button onclick="appendToCalc('/')" style="background: #6b7280; color: white; padding: 1rem; border: none; border-radius: 8px; font-size: 1rem; cursor: pointer;">÷</button>
+                        <button onclick="appendToCalc('*')" style="background: #6b7280; color: white; padding: 1rem; border: none; border-radius: 8px; font-size: 1rem; cursor: pointer;">×</button>
+                        <button onclick="deleteLast()" style="background: #6b7280; color: white; padding: 1rem; border: none; border-radius: 8px; font-size: 1rem; cursor: pointer;">⌫</button>
+                        
+                        <button onclick="appendToCalc('7')" style="background: #f3f4f6; padding: 1rem; border: none; border-radius: 8px; font-size: 1rem; cursor: pointer;">7</button>
+                        <button onclick="appendToCalc('8')" style="background: #f3f4f6; padding: 1rem; border: none; border-radius: 8px; font-size: 1rem; cursor: pointer;">8</button>
+                        <button onclick="appendToCalc('9')" style="background: #f3f4f6; padding: 1rem; border: none; border-radius: 8px; font-size: 1rem; cursor: pointer;">9</button>
+                        <button onclick="appendToCalc('-')" style="background: #6b7280; color: white; padding: 1rem; border: none; border-radius: 8px; font-size: 1rem; cursor: pointer;">-</button>
+                        
+                        <button onclick="appendToCalc('4')" style="background: #f3f4f6; padding: 1rem; border: none; border-radius: 8px; font-size: 1rem; cursor: pointer;">4</button>
+                        <button onclick="appendToCalc('5')" style="background: #f3f4f6; padding: 1rem; border: none; border-radius: 8px; font-size: 1rem; cursor: pointer;">5</button>
+                        <button onclick="appendToCalc('6')" style="background: #f3f4f6; padding: 1rem; border: none; border-radius: 8px; font-size: 1rem; cursor: pointer;">6</button>
+                        <button onclick="appendToCalc('+')" style="background: #6b7280; color: white; padding: 1rem; border: none; border-radius: 8px; font-size: 1rem; cursor: pointer;">+</button>
+                        
+                        <button onclick="appendToCalc('1')" style="background: #f3f4f6; padding: 1rem; border: none; border-radius: 8px; font-size: 1rem; cursor: pointer;">1</button>
+                        <button onclick="appendToCalc('2')" style="background: #f3f4f6; padding: 1rem; border: none; border-radius: 8px; font-size: 1rem; cursor: pointer;">2</button>
+                        <button onclick="appendToCalc('3')" style="background: #f3f4f6; padding: 1rem; border: none; border-radius: 8px; font-size: 1rem; cursor: pointer;">3</button>
+                        <button onclick="calculateResult()" style="background: #10b981; color: white; padding: 1rem; border: none; border-radius: 8px; font-size: 1rem; cursor: pointer; grid-row: span 2;">=</button>
+                        
+                        <button onclick="appendToCalc('0')" style="background: #f3f4f6; padding: 1rem; border: none; border-radius: 8px; font-size: 1rem; cursor: pointer; grid-column: span 2;">0</button>
+                        <button onclick="appendToCalc('.')" style="background: #f3f4f6; padding: 1rem; border: none; border-radius: 8px; font-size: 1rem; cursor: pointer;">.</button>
+                    </div>
+                </div>
+            `;
+            showModal(calculatorHTML);
+        }
+
+        function appendToCalc(value) {
+            const display = document.getElementById('calcDisplay');
+            if (display) {
+                display.value += value;
+            }
+        }
+
+        function clearCalc() {
+            const display = document.getElementById('calcDisplay');
+            if (display) {
+                display.value = '';
+            }
+        }
+
+        function deleteLast() {
+            const display = document.getElementById('calcDisplay');
+            if (display) {
+                display.value = display.value.slice(0, -1);
+            }
+        }
+
+        function calculateResult() {
+            const display = document.getElementById('calcDisplay');
+            if (display) {
+                try {
+                    let expression = display.value.replace(/×/g, '*').replace(/÷/g, '/');
+                    display.value = eval(expression);
+                } catch (error) {
+                    display.value = 'Error';
+                }
+            }
+        }
+
+        // Color Picker functionality
+        function openColorPicker() {
+            const colorPickerHTML = `
+                <h2>Color Picker</h2>
+                <div class="color-picker">
+                    <div style="margin-bottom: 1rem;">
+                        <label>Pick a color:</label>
+                        <input type="color" id="colorInput" value="#667eea" style="width: 100px; height: 50px; border: none; border-radius: 8px; cursor: pointer;">
+                    </div>
+                    <div id="colorInfo" style="padding: 1rem; border-radius: 8px; background: #f3f4f6; margin-bottom: 1rem;">
+                        <p><strong>Hex:</strong> <span id="hexValue">#667eea</span></p>
+                        <p><strong>RGB:</strong> <span id="rgbValue">rgb(102, 126, 234)</span></p>
+                    </div>
+                    <div>
+                        <h3>Color Palette:</h3>
+                        <div id="colorPalette" style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 0.5rem; margin-top: 1rem;"></div>
+                    </div>
+                </div>
+            `;
+            showModal(colorPickerHTML);
+            
+            const colorInput = document.getElementById('colorInput');
+            if (colorInput) {
+                colorInput.addEventListener('input', updateColorInfo);
+                updateColorInfo();
+                generateColorPalette('#667eea');
+            }
+        }
+
+        function updateColorInfo() {
+            const colorInput = document.getElementById('colorInput');
+            const hexValue = document.getElementById('hexValue');
+            const rgbValue = document.getElementById('rgbValue');
+            
+            if (colorInput && hexValue && rgbValue) {
+                const hex = colorInput.value;
+                const rgb = hexToRgb(hex);
+                
+                hexValue.textContent = hex;
+                rgbValue.textContent = `rgb(${rgb.r}, ${rgb.g}, ${rgb.b})`;
+                
+                generateColorPalette(hex);
+            }
+        }
+
+        function hexToRgb(hex) {
+            const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+            return result ? {
+                r: parseInt(result[1], 16),
+                g: parseInt(result[2], 16),
+                b: parseInt(result[3], 16)
+            } : null;
+        }
+
+        function generateColorPalette(baseColor) {
+            const palette = document.getElementById('colorPalette');
+            if (!palette) return;
+            
+            palette.innerHTML = '';
+            
+            const variations = [0.7, 0.8, 0.9, 1.0, 1.1, 1.2, 1.3, 0.5, 0.6, 1.4];
+            
+            variations.forEach(factor => {
+                const rgb = hexToRgb(baseColor);
+                const newR = Math.min(255, Math.floor(rgb.r * factor));
+                const newG = Math.min(255, Math.floor(rgb.g * factor));
+                const newB = Math.min(255, Math.floor(rgb.b * factor));
+                
+                const newColor = `rgb(${newR}, ${newG}, ${newB})`;
+                const colorBox = document.createElement('div');
+                colorBox.style.cssText = `
+                    background: ${newColor};
+                    height: 50px;
+                    border-radius: 8px;
+                    cursor: pointer;
+                    border: 2px solid #ddd;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    font-size: 0.8rem;
+                    color: ${(newR + newG + newB) / 3 > 128 ? '#000' : '#fff'};
+                `;
+                colorBox.textContent = rgbToHex(newR, newG, newB);
+                colorBox.onclick = () => {
+                    navigator.clipboard.writeText(rgbToHex(newR, newG, newB)).then(() => {
+                        alert('Color copied to clipboard!');
+                    });
+                };
+                palette.appendChild(colorBox);
+            });
+        }
+
+        function rgbToHex(r, g, b) {
+            return "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
+        }
+
+        // JSON Formatter functionality
+        function openJsonFormatter() {
+            const jsonFormatterHTML = `
+                <h2>JSON Formatter</h2>
+                <div class="json-formatter">
+                    <textarea id="jsonInput" placeholder="Paste your JSON here..." style="width: 100%; height: 200px; padding: 1rem; border: 1px solid #ddd; border-radius: 8px; font-family: monospace; resize: vertical;"></textarea>
+                    <div style="margin: 1rem 0; display: flex; gap: 1rem;">
+                        <button onclick="formatJson()" style="background: #10b981; color: white; padding: 0.5rem 1rem; border: none; border-radius: 8px; cursor: pointer;">Format</button>
+                        <button onclick="validateJson()" style="background: #3b82f6; color: white; padding: 0.5rem 1rem; border: none; border-radius: 8px; cursor: pointer;">Validate</button>
+                        <button onclick="minifyJson()" style="background: #6b7280; color: white; padding: 0.5rem 1rem; border: none; border-radius: 8px; cursor: pointer;">Minify</button>
+                    </div>
+                    <div id="jsonOutput" style="background: #f3f4f6; padding: 1rem; border-radius: 8px; min-height: 100px; font-family: monospace; white-space: pre-wrap;"></div>
+                </div>
+            `;
+            showModal(jsonFormatterHTML);
+        }
+
+        function formatJson() {
+            const input = document.getElementById('jsonInput');
+            const output = document.getElementById('jsonOutput');
+            
+            if (input && output) {
+                try {
+                    const parsed = JSON.parse(input.value);
+                    output.textContent = JSON.stringify(parsed, null, 2);
+                    output.style.color = '#000';
+                } catch (error) {
+                    output.textContent = `Error: ${error.message}`;
+                    output.style.color = '#ef4444';
+                }
+            }
+        }
+
+        function validateJson() {
+            const input = document.getElementById('jsonInput');
+            const output = document.getElementById('jsonOutput');
+            
+            if (input && output) {
+                try {
+                    JSON.parse(input.value);
+                    output.textContent = '✅ Valid JSON!';
+                    output.style.color = '#10b981';
+                } catch (error) {
+                    output.textContent = `❌ Invalid JSON: ${error.message}`;
+                    output.style.color = '#ef4444';
+                }
+            }
+        }
+
+        function minifyJson() {
+            const input = document.getElementById('jsonInput');
+            const output = document.getElementById('jsonOutput');
+            
+            if (input && output) {
+                try {
+                    const parsed = JSON.parse(input.value);
+                    output.textContent = JSON.stringify(parsed);
+                    output.style.color = '#000';
+                } catch (error) {
+                    output.textContent = `Error: ${error.message}`;
+                    output.style.color = '#ef4444';
+                }
+            }
+        }
+
+        // Lorem Generator
+        function generateLorem() {
+            const loremTexts = [
+                "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+                "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+                "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
+                "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+                "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium."
+            ];
+            
+            const randomText = loremTexts[Math.floor(Math.random() * loremTexts.length)];
+            navigator.clipboard.writeText(randomText).then(() => {
+                alert(`Lorem text copied to clipboard:\n\n"${randomText}"`);
+            }).catch(() => {
+                alert(`Lorem text:\n\n"${randomText}"`);
+            });
+        }
+
+        // Todo List functionality
+        function addTodo() {
+            const input = document.getElementById('todoInput');
+            const todoList = document.getElementById('todoList');
+            
+            if (input && todoList && input.value.trim()) {
+                const li = document.createElement('li');
+                li.className = 'todo-item';
+                li.innerHTML = `
+                    <span>${input.value}</span>
+                    <button class="delete-btn" onclick="deleteTodo(this)">Delete</button>
+                `;
+                todoList.appendChild(li);
+                input.value = '';
+            }
+        }
+
+        function deleteTodo(button) {
+            button.parentElement.remove();
+        }
+
+        // Random Quote Generator
+        function getRandomQuote() {
+            const quotes = [
+                "The only way to do great work is to love what you do. - Steve Jobs",
+                "Innovation distinguishes between a leader and a follower. - Steve Jobs",
+                "Code is poetry. - WordPress",
+                "First, solve the problem. Then, write the code. - John Johnson",
+                "Experience is the name everyone gives to their mistakes. - Oscar Wilde",
+                "In order to be irreplaceable, one must always be different. - Coco Chanel",
+                "The best way to predict the future is to create it. - Peter Drucker",
+                "Life is what happens to you while you're busy making other plans. - John Lennon",
+                "The future belongs to those who believe in the beauty of their dreams. - Eleanor Roosevelt",
+                "It is during our darkest moments that we must focus to see the light. - Aristotle"
+            ];
+            
+            const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
+            const quoteElement = document.getElementById('quote');
+            
+            if (quoteElement) {
+                quoteElement.style.opacity = '0';
+                setTimeout(() => {
+                    quoteElement.textContent = randomQuote;
+                    quoteElement.style.opacity = '1';
+                }, 150);
+            }
+        }
+
+        // Modal functionality
+        function showModal(content) {
+            const modal = document.getElementById('modal');
+            const modalBody = document.getElementById('modal-body');
+            
+            if (modal && modalBody) {
+                modalBody.innerHTML = content;
+                modal.style.display = 'block';
+                
+                modal.onclick = function(event) {
+                    if (event.target === modal) {
+                        closeModal();
+                    }
+                };
+            }
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('modal');
+            if (modal) {
+                modal.style.display = 'none';
+            }
+        }
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeModal();
+            }
+        });
+
+        // Add some console messages for developers
+        console.log('🚀 Welcome to Local Dev Hub!');
+        console.log('💻 This website is running directly in your browser');
+        console.log('🔧 Check out the interactive tools and features');
+        console.log('📱 The design is fully responsive');
+        console.log('🎨 Built with modern HTML, CSS, and JavaScript');
+    </script>
+</body>
+</html>
